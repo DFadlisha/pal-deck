@@ -10,11 +10,11 @@ if (-not (Test-Path ".env")) {
     Write-Host "Creating .env from template...`n" -ForegroundColor Yellow
     Copy-Item ".env.example" ".env"
     Write-Host "✅ Created .env file" -ForegroundColor Green
-    Write-Host "📝 Please edit .env with your Supabase credentials" -ForegroundColor Cyan
-    Write-Host "   1. Go to https://supabase.com" -ForegroundColor White
-    Write-Host "   2. Create a project" -ForegroundColor White
-    Write-Host "   3. Copy Project URL and anon key" -ForegroundColor White
-    Write-Host "   4. Paste into .env file`n" -ForegroundColor White
+    Write-Host "📝 Please edit .env with your PocketBase URL" -ForegroundColor Cyan
+    Write-Host "   1. Download PocketBase from https://pocketbase.io" -ForegroundColor White
+    Write-Host "   2. Run: ./pocketbase serve" -ForegroundColor White
+    Write-Host "   3. Create collections as per SETUP.md" -ForegroundColor White
+    Write-Host "   4. Update VITE_POCKETBASE_URL in .env file`n" -ForegroundColor White
     
     $continue = Read-Host "Press Enter when ready to continue (or Ctrl+C to exit)"
 }
@@ -24,7 +24,7 @@ npm install
 
 Write-Host "`n✅ Setup complete!" -ForegroundColor Green
 Write-Host "`n📚 Next steps:" -ForegroundColor Cyan
-Write-Host "   1. Setup Supabase (see SETUP.md)" -ForegroundColor White
+Write-Host "   1. Ensure PocketBase is running (see SETUP.md)" -ForegroundColor White
 Write-Host "   2. Run: npm run dev" -ForegroundColor White
 Write-Host "   3. Open: http://localhost:5173`n" -ForegroundColor White
 
