@@ -1,0 +1,73 @@
+.matches-screen {
+    min-height: 100vh;
+    background: #1a1625;
+    padding-bottom: 80px;
+}
+
+.matches-content {
+    padding: 1.5rem;
+}
+
+.no-matches {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.no-matches-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+}
+
+.no-matches h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.no-matches p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.match-card {
+    background: rgba(184, 164, 232, 0.08);
+    border: 1px solid rgba(184, 164, 232, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.match-card:hover {
+    background: rgba(184, 164, 232, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(184, 164, 232, 0.2);
+}
+
+.match-photo {
+    width: 100%;
+    padding-top: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.match-info {
+    padding: 1rem;
+}
+
+.match-info h4 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.match-info p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
