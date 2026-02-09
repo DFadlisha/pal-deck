@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { authService } from '../services/supabaseService';
+import { authService } from '../services/pocketbaseService';
 
 interface User {
     id: string;
@@ -24,18 +24,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         // Check current session
         authService.getCurrentUser().then((currentUser) => {
-            setUser(currentUser);
+            if (currentUser) {
+                setUser({ id: currentUser.id, email: currentUser.email });
+            }
             setLoading(false);
         });
 
         // Listen for auth changes
-        const { data: { subscription } } = authService.onAuthStateChange((user) => {
-            setUser(user);
+        const unsubscribe = authService.onAuthStateChange((record) => {
+            if (record) {
+                setUser({ id: record.id, email: record.email });
+            } else {
+                setUser(null);
+            }
             setLoading(false);
         });
 
         return () => {
-            subscription?.unsubscribe();
+            if (typeof unsubscribe === 'function') unsubscribe();
         };
     }, []);
 

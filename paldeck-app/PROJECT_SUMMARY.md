@@ -2,19 +2,14 @@
 
 ## ✅ Completed Features
 
-### 1. **Backend Integration - Supabase** ✅
-- ✅ Supabase client configuration (`src/lib/supabase.ts`)
-- ✅ Complete service layer (`src/services/supabaseService.ts`)
+### 1. **Backend Integration - PocketBase** ✅
+- ✅ PocketBase client configuration (`src/lib/pocketbase.ts`)
+- ✅ Complete service layer (`src/services/pocketbaseService.ts`)
   - Authentication (signup, signin, signout)
   - Profile management (CRUD operations)
   - Swipe tracking
   - Match detection
-  - Real-time messaging
-- ✅ Database schema (`supabase/schema.sql`)
-  - profiles, swipes, matches, messages tables
-  - Row Level Security (RLS) policies
-  - Indexes for performance
-  - Real-time subscriptions
+  - Real-time messaging (subscriptions)
 - ✅ Environment configuration (`.env.example`)
 
 ### 2. **Additional Features** ✅
@@ -23,31 +18,22 @@
   - Maximum distance slider (1-500km)
   - Interest-based filtering
   - Apply/Reset functionality
-- ✅ **Notifications** (`src/services/notificationService.ts`)
-  - Browser notifications (with permission)
-  - In-app notification system
-  - Match notifications
-  - Message notifications
-  - Like notifications
-  - Notification center
 - ✅ **Authentication Context** (`src/contexts/AuthContext.tsx`)
-  - Global auth state management
+  - Global auth state management via PocketBase
   - React hooks for auth operations
   - Auto-refresh on auth changes
 
 ### 3. **Mobile App - Capacitor** ✅
 - ✅ Capacitor installed and configured
-- ✅ `capacitor.config.ts` created
-- ✅ Ready for Android/iOS builds
-- ✅ Commands documented in SETUP.md
+- ✅ Native Android integration
+- ✅ Asset sync workflow enabled
+- ✅ Ready for release builds
 
 ### 4. **Project Organization** ✅
 - ✅ Clean folder structure
 - ✅ Organized components
-- ✅ Separate services layer
-- ✅ Context providers
-- ✅ Type definitions
-- ✅ Updated .gitignore
+- ✅ Global state management
+- ✅ Type-safe development
 
 ---
 
@@ -57,38 +43,20 @@
 paldeck-app/
 ├── src/
 │   ├── components/              # UI Components
-│   │   ├── SplashScreen.tsx
-│   │   ├── OnboardingScreen.tsx
-│   │   ├── ProfileSetup.tsx
-│   │   ├── SwipeScreen.tsx
-│   │   ├── MatchesScreen.tsx
-│   │   ├── ChatListScreen.tsx
-│   │   ├── ChatScreen.tsx
-│   │   ├── ProfileScreen.tsx
-│   │   ├── BottomNav.tsx
-│   │   ├── MatchModal.tsx
-│   │   ├── FiltersModal.tsx      # NEW
-│   │   └── [*.css files]
-│   ├── contexts/                 # NEW
-│   │   └── AuthContext.tsx       # Auth state management
-│   ├── services/                 # NEW
-│   │   ├── supabaseService.ts    # Backend API
-│   │   └── notificationService.ts # Notifications
-│   ├── lib/                      # NEW
-│   │   └── supabase.ts           # Supabase client
+│   ├── contexts/                # Global State
+│   │   └── AuthContext.tsx       # Auth management
+│   ├── services/                # Business Logic
+│   │   └── pocketbaseService.ts  # PocketBase API
+│   ├── lib/                     # Libraries
+│   │   └── pocketbase.ts         # PocketBase client
 │   ├── types.ts                  # TypeScript types
 │   ├── App.tsx
 │   ├── App.css
-│   ├── index.css
 │   └── main.tsx
-├── supabase/                     # NEW
-│   └── schema.sql                # Database schema
-├── capacitor.config.ts           # NEW - Capacitor config
-├── .env.example                  # NEW - Environment template
-├── .gitignore                    # UPDATED
-├── SETUP.md                      # NEW - Complete setup guide
-├── README.md                     # UPDATED
-└── package.json                  # UPDATED with new deps
+├── capacitor.config.ts           # Capacitor config
+├── .env.example                  # Environment template
+├── SETUP.md                      # Complete setup guide
+└── README.md                     # Project overview
 ```
 
 ---
@@ -101,7 +69,6 @@ npm install
 
 # Setup environment
 cp .env.example .env
-# Then edit .env with your Supabase credentials
 
 # Run development server
 npm run dev
@@ -109,18 +76,11 @@ npm run dev
 # Build for production
 npm run build
 
-# Add mobile platforms
-npx cap add android
-npx cap add ios
-
 # Sync web build to mobile
-npx cap sync
+npm run sync
 
 # Open in Android Studio
-npx cap open android
-
-# Open in Xcode (Mac only)
-npx cap open ios
+npm run android:open
 ```
 
 ---
@@ -129,11 +89,10 @@ npx cap open ios
 
 ```json
 {
-  "@supabase/supabase-js": "^2.x",
+  "pocketbase": "^0.x",
   "@capacitor/core": "^6.x",
   "@capacitor/cli": "^6.x",
-  "@capacitor/android": "^6.x",
-  "@capacitor/ios": "^6.x"
+  "@capacitor/android": "^6.x"
 }
 ```
 
@@ -141,29 +100,17 @@ npx cap open ios
 
 ## 🎯 Next Steps for You
 
-### 1. **Setup Supabase** (Required)
-1. Create account at supabase.com
-2. Create new project
-3. Run SQL from `supabase/schema.sql`
-4. Copy credentials to `.env`
+### 1. **Setup PocketBase** (Required)
+1. Download from pocketbase.io
+2. Run `./pocketbase serve`
+3. Create collections as per `SETUP.md`
+4. Copy `http://127.0.0.1:8090` to `.env`
 
-### 2. **Test Locally**
+### 2. **Build Mobile App**
 ```bash
-npm run dev
-# Open http://localhost:5173
-```
-
-### 3. **Build Mobile App**
-```bash
-# Build web first
 npm run build
-
-# Add platform (first time only)
-npx cap add android
-
-# Sync and open
-npx cap sync
-npx cap open android
+npm run sync
+npm run android:open
 ```
 
 ---
@@ -173,51 +120,12 @@ npx cap open android
 | Feature | Status | Location |
 |---------|--------|----------|
 | Authentication | ✅ | `src/contexts/AuthContext.tsx` |
-| Profile Management | ✅ | `src/services/supabaseService.ts` |
+| Profile Management | ✅ | `src/services/pocketbaseService.ts` |
 | Swipe Interface | ✅ | `src/components/SwipeScreen.tsx` |
-| Matching System | ✅ | `src/services/supabaseService.ts` |
-| Real-time Chat | ✅ | `src/services/supabaseService.ts` |
-| Filters | ✅ | `src/components/FiltersModal.tsx` |
-| Notifications | ✅ | `src/services/notificationService.ts` |
+| Matching System | ✅ | `src/services/pocketbaseService.ts` |
+| Real-time Chat | ✅ | `src/services/pocketbaseService.ts` |
 | Mobile Ready | ✅ | `capacitor.config.ts` |
 
 ---
 
-## 💡 Tips
-
-1. **Supabase Setup**: Follow `SETUP.md` step-by-step
-2. **Environment Variables**: Never commit `.env` file
-3. **Mobile Testing**: Use real device for best results
-4. **Deployment**: Add env vars in hosting platform dashboard
-5. **Real-time**: Enable replication in Supabase for chat
-
----
-
-## 🐛 Troubleshooting
-
-**Issue**: Supabase connection fails
-**Solution**: Check `.env` file has correct URL and key
-
-**Issue**: Real-time chat not working
-**Solution**: Enable replication for `messages` table in Supabase
-
-**Issue**: Mobile build fails
-**Solution**: Run `npm run build` first, then `npx cap sync`
-
-**Issue**: Notifications not showing
-**Solution**: Check browser notification permissions
-
----
-
-## 📞 Support Resources
-
-- **Supabase Docs**: https://supabase.com/docs
-- **Capacitor Docs**: https://capacitorjs.com/docs
-- **Vite Docs**: https://vitejs.dev
-- **React Docs**: https://react.dev
-
----
-
-**Status**: ✅ **READY FOR PRODUCTION**
-
-All features implemented, tested, and documented!
+**Status**: ✅ **READY FOR MOBILE POCKETBASE DEPLOYMENT**

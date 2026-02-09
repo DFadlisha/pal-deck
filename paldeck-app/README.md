@@ -12,7 +12,7 @@ A modern **mobile application** designed for making friends worldwide through an
 ## 🛠 Tech Stack
 - **Frontend**: React 19 + TypeScript
 - **Mobile Foundation**: [Capacitor](https://capacitorjs.com/) (iOS & Android)
-- **Backend/Database**: [Supabase](https://supabase.com/) (Postgres + Auth + Real-time)
+- **Backend/Database**: [PocketBase](https://pocketbase.io/) (SQLite + Auth + Real-time)
 - **Animations**: Framer Motion
 - **Gestures**: @use-gesture/react
 
@@ -20,6 +20,7 @@ A modern **mobile application** designed for making friends worldwide through an
 
 ### Prerequisites
 - **Node.js**: 18+
+- **PocketBase**: Download binary from pocketbase.io
 - **Android Development**: Android Studio + SDK
 - **iOS Development**: Xcode (macOS only)
 
@@ -30,7 +31,7 @@ npm install
 
 # Initialize environment
 cp .env.example .env
-# Add your Supabase URL and Anon Key to .env
+# Add your PocketBase URL to .env
 ```
 
 ### Mobile Development Workflow
@@ -39,11 +40,11 @@ cp .env.example .env
 npm run build
 
 # 2. Sync to mobile platforms
-npx cap sync
+npm run sync
 
 # 3. Open in native IDEs
-npx cap open android
-npx cap open ios
+npm run android:open
+npm run ios:open
 ```
 
 ## 📁 Project Structure
@@ -53,20 +54,19 @@ paldeck-app/
 ├── ios/                  # Native iOS project
 ├── src/
 │   ├── components/       # Mobile UI components
-│   ├── services/         # Supabase & Notification logic
+│   ├── services/         # PocketBase logic
 │   └── contexts/         # Authentication state
-├── supabase/             # Database schema & migrations
 └── capacitor.config.ts   # Mobile app configuration
 ```
 
-## 🔐 Backend (Supabase)
-Detailed instructions for setting up your database schema and authentication can be found in `SETUP.md`.
+## 🔐 Backend (PocketBase)
+Detailed instructions for setting up your database collections and authentication can be found in `SETUP.md`.
 
 ## 📱 Release Process
 To generate a production build for the App Store or Google Play:
 1. Run `npm run build`
-2. Run `npx cap sync`
+2. Run `npm run sync`
 3. Use Android Studio (Build > Generate Signed APK) or Xcode (Product > Archive) to create your release packages.
 
 ---
-Built exclusively for mobile using React, Supabase, and Capacitor.
+Built exclusively for mobile using React, PocketBase, and Capacitor.
