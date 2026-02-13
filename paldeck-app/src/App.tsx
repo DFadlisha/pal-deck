@@ -98,6 +98,9 @@ function App() {
 
   return (
     <div className="app">
+      <div style={{ color: 'red', fontSize: '50px', position: 'fixed', top: 0, left: 0, zIndex: 9999, background: 'yellow' }}>
+        HELLO WORLD
+      </div>
       <AnimatePresence mode="wait">
         <motion.div
           key={currentScreen}
