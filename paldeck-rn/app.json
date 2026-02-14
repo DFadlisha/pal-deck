@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "PalDeck",
+    "slug": "paldeck-rn",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1625"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.paldeck.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1625"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.paldeck.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "pocketbaseUrl": "http://10.0.2.2:8090"
+    }
+  }
+}
