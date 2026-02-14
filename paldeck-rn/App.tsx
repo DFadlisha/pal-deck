@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,6 +8,8 @@ import Svg, { Path, Circle } from 'react-native-svg';
 
 import SplashScreen from './src/screens/SplashScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 import ProfileSetupScreen from './src/screens/ProfileSetupScreen';
 import SwipeScreen from './src/screens/SwipeScreen';
 import MatchesScreen from './src/screens/MatchesScreen';
@@ -18,6 +20,7 @@ import VoiceChatScreen from './src/screens/VoiceChatScreen';
 import MatchModal from './src/components/MatchModal';
 import IncomingCallModal from './src/components/IncomingCallModal';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { authService } from './src/services/pocketbaseService';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from './src/theme';
 import type { UserProfile, Match } from './src/types';
 
@@ -38,7 +41,7 @@ const DarkNavTheme = {
   },
 };
 
-type AppScreen = 'splash' | 'onboarding' | 'profile-setup' | 'main' | 'chat' | 'voice-chat';
+type AppScreen = 'splash' | 'onboarding' | 'login' | 'register' | 'profile-setup' | 'main' | 'chat' | 'voice-chat';
 
 // Icon components for tab bar
 const DiscoverIcon = ({ color, size }: { color: string; size: number }) => (
@@ -89,6 +92,37 @@ export default function App() {
     } catch {
       setCurrentScreen('onboarding');
     }
+  };
+
+  const handleLogin = async (email: string, password: string) => {
+    const { data, error } = await authService.signIn(email, password);
+    if (error) throw error;
+    // Check if profile exists
+    const savedProfile = await AsyncStorage.getItem('userProfile');
+    if (savedProfile) {
+      setUserProfile(JSON.parse(savedProfile));
+      setCurrentScreen('main');
+    } else {
+      setCurrentScreen('profile-setup');
+    }
+  };
+
+  const handleRegister = async (email: string, password: string) => {
+    const { data, error } = await authService.signUp(email, password);
+    if (error) throw error;
+    // Auto-login after registration
+    await authService.signIn(email, password);
+    setCurrentScreen('profile-setup');
+  };
+
+  const handleGoogleAuth = async () => {
+    // Simulated Google sign-in for now
+    // In production, use expo-auth-session or @react-native-google-signin
+    Alert.alert(
+      'Google Sign-In',
+      'Google OAuth will be connected when you set up your Google Cloud Console credentials. For now, please use email/password.',
+      [{ text: 'OK' }]
+    );
   };
 
   const handleProfileSave = async (profile: UserProfile) => {
@@ -159,7 +193,34 @@ export default function App() {
     return (
       <>
         <StatusBar style="light" />
-        <OnboardingScreen onGetStarted={() => setCurrentScreen('profile-setup')} />
+        <OnboardingScreen onGetStarted={() => setCurrentScreen('login')} />
+      </>
+    );
+  }
+
+  if (currentScreen === 'login') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <LoginScreen
+          onLogin={handleLogin}
+          onGoogleLogin={handleGoogleAuth}
+          onGoToRegister={() => setCurrentScreen('register')}
+          onSkip={() => setCurrentScreen('profile-setup')}
+        />
+      </>
+    );
+  }
+
+  if (currentScreen === 'register') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <RegisterScreen
+          onRegister={handleRegister}
+          onGoogleRegister={handleGoogleAuth}
+          onGoToLogin={() => setCurrentScreen('login')}
+        />
       </>
     );
   }
