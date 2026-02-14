@@ -10,19 +10,27 @@ import {
     Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path } from 'react-native-svg';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius, Shadows } from '../theme';
 import type { Match } from '../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const PhoneCallIcon = ({ color, size }: { color: string; size: number }) => (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <Path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </Svg>
+);
 
 interface MatchModalProps {
     isOpen: boolean;
     match: Match | null;
     onClose: () => void;
     onSendMessage: () => void;
+    onVoiceCall?: () => void;
 }
 
-const MatchModal = ({ isOpen, match, onClose, onSendMessage }: MatchModalProps) => {
+const MatchModal = ({ isOpen, match, onClose, onSendMessage, onVoiceCall }: MatchModalProps) => {
     const scaleAnim = useRef(new Animated.Value(0.8)).current;
     const opacityAnim = useRef(new Animated.Value(0)).current;
     const heartScale = useRef(new Animated.Value(0)).current;
@@ -121,6 +129,20 @@ const MatchModal = ({ isOpen, match, onClose, onSendMessage }: MatchModalProps) 
                             </LinearGradient>
                         </TouchableOpacity>
 
+                        <TouchableOpacity activeOpacity={0.85} onPress={onVoiceCall}>
+                            <LinearGradient
+                                colors={[Colors.successGradientStart, '#5cb85c']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.primaryBtn}
+                            >
+                                <View style={styles.voiceCallRow}>
+                                    <PhoneCallIcon color={Colors.white} size={18} />
+                                    <Text style={styles.primaryBtnText}>Voice Call</Text>
+                                </View>
+                            </LinearGradient>
+                        </TouchableOpacity>
+
                         <TouchableOpacity style={styles.secondaryBtn} onPress={onClose} activeOpacity={0.7}>
                             <Text style={styles.secondaryBtnText}>Keep Swiping</Text>
                         </TouchableOpacity>
@@ -216,6 +238,11 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontSize: FontSize.lg,
         fontWeight: FontWeight.bold,
+    },
+    voiceCallRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
     },
     secondaryBtn: {
         paddingVertical: 14,

@@ -14,7 +14,9 @@ import MatchesScreen from './src/screens/MatchesScreen';
 import ChatListScreen from './src/screens/ChatListScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import VoiceChatScreen from './src/screens/VoiceChatScreen';
 import MatchModal from './src/components/MatchModal';
+import IncomingCallModal from './src/components/IncomingCallModal';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from './src/theme';
 import type { UserProfile, Match } from './src/types';
@@ -36,7 +38,7 @@ const DarkNavTheme = {
   },
 };
 
-type AppScreen = 'splash' | 'onboarding' | 'profile-setup' | 'main' | 'chat';
+type AppScreen = 'splash' | 'onboarding' | 'profile-setup' | 'main' | 'chat' | 'voice-chat';
 
 // Icon components for tab bar
 const DiscoverIcon = ({ color, size }: { color: string; size: number }) => (
@@ -71,6 +73,9 @@ export default function App() {
   const [showMatchModal, setShowMatchModal] = useState(false);
   const [currentMatch, setCurrentMatch] = useState<Match | null>(null);
   const [currentChatUser, setCurrentChatUser] = useState<Match | null>(null);
+  const [voiceCallUser, setVoiceCallUser] = useState<Match | null>(null);
+  const [showIncomingCall, setShowIncomingCall] = useState(false);
+  const [incomingCaller, setIncomingCaller] = useState<Match | null>(null);
 
   const handleSplashFinish = async () => {
     try {
@@ -101,6 +106,43 @@ export default function App() {
   const handleOpenChat = (match: Match) => {
     setCurrentChatUser(match);
     setCurrentScreen('chat');
+  };
+
+  const handleStartVoiceCall = (match: Match) => {
+    setVoiceCallUser(match);
+    setCurrentScreen('voice-chat');
+  };
+
+  const handleEndVoiceCall = () => {
+    setVoiceCallUser(null);
+    // Go back to the previous screen (chat or main)
+    if (currentChatUser) {
+      setCurrentScreen('chat');
+    } else {
+      setCurrentScreen('main');
+    }
+  };
+
+  // Simulate incoming call after matching (for demo)
+  const handleSimulateIncomingCall = (match: Match) => {
+    // Simulate a delay for incoming call
+    setTimeout(() => {
+      setIncomingCaller(match);
+      setShowIncomingCall(true);
+    }, 8000); // 8 seconds after match
+  };
+
+  const handleAcceptIncomingCall = () => {
+    setShowIncomingCall(false);
+    if (incomingCaller) {
+      setVoiceCallUser(incomingCaller);
+      setCurrentScreen('voice-chat');
+    }
+  };
+
+  const handleDeclineIncomingCall = () => {
+    setShowIncomingCall(false);
+    setIncomingCaller(null);
   };
 
   // Render pre-main screens
@@ -135,6 +177,18 @@ export default function App() {
     );
   }
 
+  if (currentScreen === 'voice-chat') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <VoiceChatScreen
+          match={voiceCallUser}
+          onEnd={handleEndVoiceCall}
+        />
+      </>
+    );
+  }
+
   if (currentScreen === 'chat') {
     return (
       <>
@@ -142,6 +196,13 @@ export default function App() {
         <ChatScreen
           user={currentChatUser}
           onBack={() => setCurrentScreen('main')}
+          onVoiceCall={handleStartVoiceCall}
+        />
+        <IncomingCallModal
+          isVisible={showIncomingCall}
+          caller={incomingCaller}
+          onAccept={handleAcceptIncomingCall}
+          onDecline={handleDeclineIncomingCall}
         />
       </>
     );
@@ -177,7 +238,10 @@ export default function App() {
               tabBarIcon: ({ color, size }) => <DiscoverIcon color={color} size={size} />,
             }}
           >
-            {() => <SwipeScreen onMatch={handleMatch} />}
+            {() => <SwipeScreen onMatch={(match) => {
+              handleMatch(match);
+              handleSimulateIncomingCall(match);
+            }} />}
           </Tab.Screen>
 
           <Tab.Screen
@@ -225,6 +289,19 @@ export default function App() {
             handleOpenChat(currentMatch);
           }
         }}
+        onVoiceCall={() => {
+          setShowMatchModal(false);
+          if (currentMatch) {
+            handleStartVoiceCall(currentMatch);
+          }
+        }}
+      />
+
+      <IncomingCallModal
+        isVisible={showIncomingCall}
+        caller={incomingCaller}
+        onAccept={handleAcceptIncomingCall}
+        onDecline={handleDeclineIncomingCall}
       />
     </AuthProvider>
   );
