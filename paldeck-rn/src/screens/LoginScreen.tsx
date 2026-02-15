@@ -85,7 +85,7 @@ const LoginScreen = ({ onLogin, onGoogleLogin, onGoToRegister, onSkip }: LoginSc
                     <PalDeckLogoPastel size={80} />
                 </Animated.View>
                 <Text style={styles.title}>Welcome Back</Text>
-                <Text style={styles.subtitle}>Sign in to continue to PalDeck</Text>
+                <Text style={styles.subtitle}>Sign in to find your pals on PalDeck</Text>
 
                 <Animated.View style={[styles.form, { opacity: formOpacity, transform: [{ translateY: formY }] }]}>
                     {/* Google Button */}

@@ -50,9 +50,12 @@ const DiscoverIcon = ({ color, size }: { color: string; size: number }) => (
   </Svg>
 );
 
-const MatchesIcon = ({ color, size }: { color: string; size: number }) => (
+const PalsIcon = ({ color, size }: { color: string; size: number }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}>
-    <Path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    <Path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+    <Circle cx={9} cy={7} r={4} />
+    <Path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+    <Path d="M16 3.13a4 4 0 0 1 0 7.75" />
   </Svg>
 );
 
@@ -306,9 +309,9 @@ export default function App() {
           </Tab.Screen>
 
           <Tab.Screen
-            name="Matches"
+            name="Pals"
             options={{
-              tabBarIcon: ({ color, size }) => <MatchesIcon color={color} size={size} />,
+              tabBarIcon: ({ color, size }) => <PalsIcon color={color} size={size} />,
               tabBarBadge: matches.length > 0 ? matches.length : undefined,
             }}
           >

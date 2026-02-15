@@ -100,13 +100,13 @@ const MatchModal = ({ isOpen, match, onClose, onSendMessage, onVoiceCall }: Matc
                             { opacity: titleOpacity, transform: [{ translateY: titleY }] },
                         ]}
                     >
-                        It's a Match! 🎉
+                        New Pal Found! 🎉
                     </Animated.Text>
 
                     <View style={styles.avatarsRow}>
                         <Image source={{ uri: match.user.photo }} style={styles.matchAvatar} />
                         <Animated.View style={[styles.heartBadge, { transform: [{ scale: heartScale }] }]}>
-                            <Text style={styles.heartEmoji}>💙</Text>
+                            <Text style={styles.heartEmoji}>🤝</Text>
                         </Animated.View>
                         <View style={styles.youAvatar}>
                             <Text style={styles.youText}>You</Text>

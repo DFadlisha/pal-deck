@@ -13,11 +13,11 @@ const MatchesScreen = ({ matches, onChatClick }: MatchesScreenProps) => {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Your Matches</Text>
+                    <Text style={styles.headerTitle}>Your Pals</Text>
                 </View>
                 <View style={styles.emptyContainer}>
                     <Text style={styles.emptyIcon}>💫</Text>
-                    <Text style={styles.emptyTitle}>No matches yet</Text>
+                    <Text style={styles.emptyTitle}>No pals yet</Text>
                     <Text style={styles.emptyText}>Start swiping to find your new friends!</Text>
                 </View>
             </View>
@@ -27,7 +27,7 @@ const MatchesScreen = ({ matches, onChatClick }: MatchesScreenProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Your Matches</Text>
+                <Text style={styles.headerTitle}>Your Pals</Text>
             </View>
             <FlatList
                 data={matches}

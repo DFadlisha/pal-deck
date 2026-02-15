@@ -45,11 +45,16 @@ const ProfileSetupScreen = ({ onSave, onBack, existingProfile }: ProfileSetupPro
     };
 
     const handleSubmit = () => {
+        const ageNum = Number(age);
         if (name && age && location && bio && selectedInterests.length >= 3) {
+            if (ageNum < 18) {
+                Alert.alert('Restriction', 'You must be at least 18 years old to use PalDeck.');
+                return;
+            }
             const profile: UserProfile = {
                 id: existingProfile?.id || Date.now().toString(),
                 name,
-                age: Number(age),
+                age: ageNum,
                 location,
                 bio,
                 interests: selectedInterests,

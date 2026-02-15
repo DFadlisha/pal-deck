@@ -24,7 +24,7 @@ interface SwipeScreenProps {
 const mockUsers: SwipeCard[] = [
     {
         id: '1', name: 'Alex Chen', age: 24, location: 'Tokyo, Japan',
-        bio: 'Love anime, gaming, and exploring new cultures! Looking for friends to chat about life and share experiences.',
+        bio: 'Love anime, gaming, and exploring new cultures! Looking for pals to chat about life and share experiences.',
         interests: ['Gaming', 'Anime', 'Travel', 'Photography', 'Music'],
         photo: 'https://i.pravatar.cc/400?img=12', distance: 8520,
     },
@@ -36,19 +36,19 @@ const mockUsers: SwipeCard[] = [
     },
     {
         id: '3', name: 'James Wilson', age: 26, location: 'London, UK',
-        bio: "Tech geek and fitness enthusiast. Love discussing startups, coding, and staying active. Let's connect!",
+        bio: "Tech geek and fitness enthusiast. Love discussing startups, coding, and staying active. Let's connect as pals!",
         interests: ['Technology', 'Fitness', 'Startups', 'Coding', 'Running'],
         photo: 'https://i.pravatar.cc/400?img=33', distance: 6840,
     },
     {
         id: '4', name: 'Yuki Tanaka', age: 23, location: 'Seoul, South Korea',
-        bio: 'K-pop fan and language learner 🎵 Want to practice English and make friends who love Korean culture!',
+        bio: 'K-pop fan and language learner 🎵 Want to practice English and meet friends who love Korean culture!',
         interests: ['K-pop', 'Languages', 'Dancing', 'Food', 'Fashion'],
         photo: 'https://i.pravatar.cc/400?img=47', distance: 1200,
     },
     {
         id: '5', name: 'Emma Rodriguez', age: 25, location: 'Barcelona, Spain',
-        bio: 'Foodie and travel blogger. Always looking for new adventures and friends to share stories with!',
+        bio: 'Foodie and travel blogger. Always looking for new adventures and buddies to share stories with!',
         interests: ['Travel', 'Food', 'Blogging', 'Photography', 'Wine'],
         photo: 'https://i.pravatar.cc/400?img=48', distance: 9500,
     },
@@ -147,7 +147,7 @@ const SwipeScreen = ({ onMatch }: SwipeScreenProps) => {
                 <View style={styles.emptyContainer}>
                     <Text style={styles.emptyIcon}>🎉</Text>
                     <Text style={styles.emptyTitle}>You're all caught up!</Text>
-                    <Text style={styles.emptyText}>Check back later for more people to connect with</Text>
+                    <Text style={styles.emptyText}>Check back later for more pals to connect with</Text>
                 </View>
             </View>
         );
@@ -199,14 +199,14 @@ const SwipeScreen = ({ onMatch }: SwipeScreenProps) => {
                         style={styles.cardGradient}
                     />
 
-                    {/* LIKE stamp */}
+                    {/* PAL stamp */}
                     <Animated.View style={[styles.stamp, styles.stampLike, { opacity: likeOpacity }]}>
-                        <Text style={styles.stampLikeText}>LIKE</Text>
+                        <Text style={styles.stampLikeText}>PAL</Text>
                     </Animated.View>
 
-                    {/* NOPE stamp */}
+                    {/* SKIP stamp */}
                     <Animated.View style={[styles.stamp, styles.stampNope, { opacity: nopeOpacity }]}>
-                        <Text style={styles.stampNopeText}>NOPE</Text>
+                        <Text style={styles.stampNopeText}>SKIP</Text>
                     </Animated.View>
 
                     <View style={styles.cardInfo}>
@@ -256,7 +256,7 @@ const SwipeScreen = ({ onMatch }: SwipeScreenProps) => {
                     }}
                     activeOpacity={0.7}
                 >
-                    <Text style={styles.actionLikeIcon}>♥</Text>
+                    <Text style={styles.actionLikeIcon}>👋</Text>
                 </TouchableOpacity>
             </View>
         </View>

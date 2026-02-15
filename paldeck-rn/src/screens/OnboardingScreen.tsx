@@ -71,7 +71,7 @@ const OnboardingScreen = ({ onGetStarted }: OnboardingScreenProps) => {
             </Animated.Text>
 
             <Animated.Text style={[styles.description, { opacity: descOpacity }]}>
-                Connect with amazing people worldwide. Swipe to find friends who share your interests and passions.
+                Connect with amazing pals worldwide. Swipe to find friends who share your interests and passions.
             </Animated.Text>
 
             <Animated.View style={[styles.features, { opacity: featuresOpacity }]}>

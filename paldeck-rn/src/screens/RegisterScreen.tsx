@@ -104,7 +104,7 @@ const RegisterScreen = ({ onRegister, onGoogleRegister, onGoToLogin }: RegisterS
                     <PalDeckLogoPastel size={70} />
                 </Animated.View>
                 <Text style={rStyles.title}>Create Account</Text>
-                <Text style={rStyles.subtitle}>Join PalDeck and find your people</Text>
+                <Text style={rStyles.subtitle}>Join PalDeck and find your pals</Text>
 
                 <Animated.View style={[rStyles.form, { opacity: formOpacity, transform: [{ translateY: formY }] }]}>
                     {/* Google Button */}

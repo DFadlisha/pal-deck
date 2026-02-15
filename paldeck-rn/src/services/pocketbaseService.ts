@@ -86,7 +86,7 @@ export const profileService = {
     async getPotentialMatches(userId: string, limit = 10) {
         try {
             const data = await pb.collection(Collections.Profiles).getList(1, limit, {
-                filter: `user_id != "${userId}"`,
+                filter: `user_id != "${userId}" && age >= 18`,
             });
             return { data: data.items, error: null };
         } catch (error: any) {
