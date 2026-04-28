@@ -24,6 +24,20 @@ export const authService = {
         }
     },
 
+    async signInWithProvider(providerName: string, code: string, codeVerifier: string, redirectUrl: string) {
+        try {
+            const data = await pb.collection('users').authWithOAuth2(
+                providerName,
+                code,
+                codeVerifier,
+                redirectUrl
+            );
+            return { data: data.record, error: null };
+        } catch (error: any) {
+            return { data: null, error };
+        }
+    },
+
     async signOut() {
         pb.authStore.clear();
         return { error: null };

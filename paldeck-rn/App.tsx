@@ -23,6 +23,11 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import { authService } from './src/services/pocketbaseService';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from './src/theme';
 import type { UserProfile, Match } from './src/types';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+
+WebBrowser.maybeCompleteAuthSession();
+
 
 const Tab = createBottomTabNavigator();
 
@@ -73,6 +78,7 @@ const ProfileIcon = ({ color, size }: { color: string; size: number }) => (
 );
 
 export default function App() {
+  console.log('--- PALDECK APP STARTING ---');
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('splash');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
@@ -82,6 +88,40 @@ export default function App() {
   const [voiceCallUser, setVoiceCallUser] = useState<Match | null>(null);
   const [showIncomingCall, setShowIncomingCall] = useState(false);
   const [incomingCaller, setIncomingCaller] = useState<Match | null>(null);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: '422681875306-ph6tkdjd5kge296u8toiqia522q5l733.apps.googleusercontent.com', // Get from Google Cloud Console
+    iosClientId: '422681875306-318bmc08d29bimr4ol9l40o1qa0qtssp.apps.googleusercontent.com',       // Get from Google Cloud Console
+    webClientId: '422681875306-oas6ha0ggu6h440j382dlutav6ud0psi.apps.googleusercontent.com',
+  });
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params;
+      const redirectUri = request?.redirectUri || '';
+      const codeVerifier = request?.codeVerifier || '';
+      
+      handleGoogleAuthSuccess(code, codeVerifier, redirectUri);
+    }
+  }, [response]);
+
+  const handleGoogleAuthSuccess = async (code: string, codeVerifier: string, redirectUri: string) => {
+    try {
+      const { data, error } = await authService.signInWithProvider('google', code, codeVerifier, redirectUri);
+      if (error) throw error;
+      
+      const savedProfile = await AsyncStorage.getItem('userProfile');
+      if (savedProfile) {
+        setUserProfile(JSON.parse(savedProfile));
+        setCurrentScreen('main');
+      } else {
+        setCurrentScreen('profile-setup');
+      }
+    } catch (e: any) {
+      Alert.alert('Google Login Failed', e?.message || 'Something went wrong');
+    }
+  };
+
 
   const handleSplashFinish = async () => {
     try {
@@ -119,13 +159,11 @@ export default function App() {
   };
 
   const handleGoogleAuth = async () => {
-    // Simulated Google sign-in for now
-    // In production, use expo-auth-session or @react-native-google-signin
-    Alert.alert(
-      'Google Sign-In',
-      'Google OAuth will be connected when you set up your Google Cloud Console credentials. For now, please use email/password.',
-      [{ text: 'OK' }]
-    );
+    if (!request) {
+      Alert.alert('Error', 'Google sign-in is not ready yet');
+      return;
+    }
+    promptAsync();
   };
 
   const handleProfileSave = async (profile: UserProfile) => {
